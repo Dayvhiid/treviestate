@@ -13,7 +13,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
-//Google OAuth Login
+//Google OAuth Login and stuff
 
 
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle']);
