@@ -1,10 +1,11 @@
 <?php
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PropertyController;
 use App\Http\Controllers\API\SocialAuthController;
+use App\Http\Controllers\API\PasswordResetController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 // use Illuminate\Http\Request;
 
 
@@ -68,5 +69,9 @@ Route::get('/email/verify/{id}/{hash}', function ($id, $hash) {
 Route::middleware('auth:sanctum')->get('/email/check', function (Request $request) {
     return response()->json(['verified' => $request->user()->hasVerifiedEmail()]);
 });
+
+//Update Password
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [PasswordResetController::class, 'reset']);
 
 
