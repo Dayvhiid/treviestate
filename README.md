@@ -66,10 +66,12 @@
 ##### Post Properties
 - **URL**: `/api/properties`
 - **Method**: `POST`
-- **Description**: Login a user.
+- **Description**: Create a new listing.
 - **Request Parameters**:
-  - `email` (string, required): The email of the user.
-  - `password` (string, required): The password of the user.
+  - `image`(jpg,png,blob, required): The image.
+  - `price` (integer, required): You know what price is abi ??.
+  - `location` (string, required): You know what location is abi ??.
+  - `description` (string, required): You know what location is abi ??.
   - **Headers**:
   - `Authorization`(Key): `Bearer_token`(Value)
    - `Accept`(Key): `Application/json`(Value)
