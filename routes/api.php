@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 //Google OAuth Login and stuff
@@ -70,6 +70,15 @@ Route::middleware('auth:sanctum')->get('/email/check', function (Request $reques
 
 //Update Password
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
-Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+// // Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+// Route::get('/reset-password/{token}', function ($token) {
+//     return response()->json(['token' => $token, 'valid' => true]);
+// });
 
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+
+Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
 
