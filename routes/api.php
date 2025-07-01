@@ -15,8 +15,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 //Google OAuth Login and stuff
-
-
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
