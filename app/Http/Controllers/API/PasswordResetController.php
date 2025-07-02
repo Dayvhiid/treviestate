@@ -26,50 +26,7 @@ class PasswordResetController extends Controller
         : response()->json(['error' => 'Unable to send reset link'], 400);
 }
 
-    // public function reset(Request $request)
-    // {
-    //     $request->validate([
-    //         'token' => 'required',
-    //         'email' => 'required|email',
-    //         'password' => 'required|min:6|confirmed',
-    //     ]);
 
-    //     $status = Password::reset(
-    //         $request->only('email', 'password', 'password_confirmation', 'token'),
-    //         function (User $user, $password) {
-    //             $user->forceFill([
-    //                 'password' => Hash::make($password)
-    //             ])->save();
-    //         }
-    //     );
-
-    //     return $status === Password::PASSWORD_RESET
-    //         ? response()->json(['message' => 'Password has been reset'])
-    //         : response()->json(['error' => 'Invalid token or email'], 400);
-    // }
-
-    // PasswordResetController.php
-// public function reset(Request $request)
-// {
-//     $request->validate([
-//         'token' => 'required',
-//         'email' => 'required|email',
-//         'password' => 'required|confirmed|min:8',
-//     ]);
-
-//     $status = Password::reset(
-//         $request->only('email', 'password', 'password_confirmation', 'token'),
-//         function ($user, $password) {
-//             $user->forceFill([
-//                 'password' => Hash::make($password)
-//             ])->save();
-//         }
-//     );
-
-//     return $status === Password::PASSWORD_RESET
-//         ? redirect()->route('login')->with('status', __($status))
-//         : back()->withErrors(['email' => [__($status)]]);
-// }
 
 
   public function showResetForm(Request $request, $token = null)
@@ -80,29 +37,35 @@ class PasswordResetController extends Controller
 }
 
     public function reset(Request $request)
-    {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ]);
+{
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|confirmed|min:8',
+    ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
 
-                $user->save();
+            $user->save();
 
-                event(new PasswordReset($user));
-            }
-        );
+            event(new PasswordReset($user));
+        }
+    );
 
-        return $status == Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+    if ($status === Password::PASSWORD_RESET) {
+        return response()->json([
+            'message' => 'Password has been reset successfully.'
+        ], 200);
     }
+
+    return response()->json([
+        'message' => __($status)
+    ], 422);
+}
 
 }
