@@ -147,4 +147,24 @@
   }
   ```  
   ### Leeave out all the OAUTH routes for now
+
+
+  ### Forgot-password
+ - **URL**: `/api/forgot-password`
+- **Method**: `POST`
+- **Description**: This route send an email to the user to update his/her password.
+- **Request Headers**:
+  - `Authorization` (string, required): Bearer token.
+- **Request Parameters**:
+  - `email`(string, required): The image. 
+- **Response Example**:
+  ```json
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "johndoe@example.com"
+  }
+  ``` 
+ please note that the email has to be an existing email
+ The User recieves an email and is directed to a webpage where they can update the password.
     
