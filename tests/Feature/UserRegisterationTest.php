@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserRegisterationTest extends TestCase
 {
@@ -21,4 +22,23 @@ class UserRegisterationTest extends TestCase
      $response->assertStatus(200);
  
     }
+
+    public function test_user_can_get_profile(){
+        $user = User::factory()->create();
+        $response = $this->actingAs($user, 'sanctum')->get('/api/user');
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'name' => $user->name,
+                     'email' => $user->email,
+                 ]);
+    }
+
+    public function test_user_can_logout(){
+        $user = User::factory()->create();
+        $response = $this->actingAs($user, 'sanctum')->post('/api/logout');
+        $response->assertStatus(200)
+                 ->assertJson(['message' => 'Logged out']);
+    }
+
+     
 }
